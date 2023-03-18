@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>QnA</title>
+{% endblock %}
+
+{% block body %}
+<h1>Q&A Search Engine</h1>
+<form method="POST" action="/query">
+    <span>
+	<input id="search" type="text" name="search_query" placeholder="how to code" value="{{ query }}" />
+    </span>
+    <span>
+	{% if index == "PyLucene" %}
+	    <input id="pylucene" type="radio" value="PyLucene" name="index" checked />
+            <label for="pylucene">PyLucene</label>
+            <input id="bert" type="radio" value="BERT" name="index" />
+            <label for="bert">BERT</label>
+	{% else %}
+	    <input id="pylucene" type="radio" value="PyLucene" name="index" />
+            <label for="pylucene">PyLucene</label>
+            <input id="bert" type="radio" value="BERT" name="index" checked />
+            <label for="bert">BERT</label>
+	{% endif %}
+    </span>
+    <span>
+        <input type="submit" value="search" formaction="/query" />
+    </span>
+</form>
+<hr>
+<div id="results">
+    <div id="result-stats">About {{ total_results }} results ({{ response_time }} seconds)</div><br>
+    <ul style="list-style-type:none;">
+	{% if index == "PyLucene" %}
+     	    {% for result in results %}
+	        <li>
+		    <div id="logo">
+			<span id="logo_img"><img src="static/assets/{{result.logo_text}}.png" alt="{{result.logo_text}} icon" /></span>
+			<div id="logo_text">
+			    <div class="logo_text"><b id="website_text">{{ result.logo_text }}</b></div>
+			    <div class="logo_text">{{ result.str_url }}</div>
+			</div>
+		    </div>
+		    <a href="{{ result.url }}">{{ result.title }}</a>
+		    <br>
+		    <span id="result_body">{{ result.body }} ... <br><span>
+		    <b id="score">Score : {{ result.score }}</b>
+	        </li>
+    	    {% endfor %}
+	{% else %}
+	    {% for result in results %}
+                <li>
+		    <div id="logo">
+                        <span id="logo_img"><img src="static/assets/{{result.logo_text}}.png" alt="{{result.logo_text}} icon" /></span>
+                        <div id="logo_text">
+			    <div class="logo_text"><b id="website_text">{{ result.logo_text }}</b></div>
+                            <div class="logo_text">{{ result.str_url }}</div>
+                        </div>
+                    </div>
+		    <a href="{{ result.url }}">{{ result.title }}</a>
+                    <br>
+		    <b id="score">Score : {{ result.score }}</b>
+                </li>
+            {% endfor %}
+	{% endif %}
+    </ul>
+</div>
+{% endblock %}

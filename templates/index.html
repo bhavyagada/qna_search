@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>QnA</title>
+{% endblock %}
+
+{% block body %}
+<h1>Q&A Search Engine</h1>
+<form method="POST" action="/query">
+    <span>
+        <input id="search" type="text" name="search_query" />
+    </span>
+    <span>
+        <input id="pylucene" type="radio" value="PyLucene" name="index" />
+        <label for="pylucene">PyLucene</label>
+        <input id="bert" type="radio" value="BERT" name="index" />
+        <label for="bert">BERT</label>
+    </span>
+    <span>
+        <input type="submit" value="search" />
+    </span>
+</form>
+<hr>
+{% endblock %}
+
